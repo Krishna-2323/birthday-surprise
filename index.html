@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, My Love ✨</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
+    }
+    .font-serif-title {
+      font-family: 'Playfair Display', serif;
+    }
+    .font-handwriting {
+      font-family: 'Caveat', cursive;
+    }
+
+    /* Keypad button styling */
+    .key-btn {
+      transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(12px);
+    }
+    .key-btn:hover {
+      transform: translateY(-2px) scale(1.04);
+      background-color: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 10px 20px -5px rgba(244, 114, 182, 0.25);
+    }
+    .key-btn:active {
+      transform: translateY(1px) scale(0.95);
+      background-color: rgba(254, 226, 226, 0.9);
+    }
+
+    /* Wrong passcode shake animation */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-12px); }
+      40%, 80% { transform: translateX(12px); }
+    }
+    .shake-anim {
+      animation: shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+
+    /* Ambient background glowing circles */
+    @keyframes floatSlow {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -25px) scale(1.08); }
+    }
+    @keyframes floatDelayed {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-25px, 30px) scale(1.06); }
+    }
+    .animate-float-1 { animation: floatSlow 10s ease-in-out infinite; }
+    .animate-float-2 { animation: floatDelayed 12s ease-in-out infinite 1s; }
+
+    /* Hint Glow Pulse */
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(244, 114, 182, 0.35); }
+      50% { box-shadow: 0 0 0 8px rgba(244, 114, 182, 0); }
+    }
+    .pulse-glow-btn {
+      animation: pulseGlow 2.5s infinite;
+    }
+
+    /* Washi Tape Accent */
+    .washi-tape {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 85px;
+      height: 24px;
+      background-color: rgba(254, 240, 138, 0.85);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+      border-radius: 2px;
+      z-index: 20;
+    }
+
+    /* Large 3D Story Flip Card Engine */
+    .story-card-container {
+      perspective: 1200px;
+      height: 500px;
+    }
+    .story-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .story-card-container.flipped .story-card-inner {
+      transform: rotateY(180deg);
+    }
+    .story-card-front, .story-card-back {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 1.75rem;
+    }
+    .story-card-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Interactive Button Hover Animations */
+    .btn-action {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .story-card-container:hover .btn-flip-icon {
+      transform: rotate(180deg);
+    }
+    .btn-flip-icon {
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Cursor Sparkle Trail */
+    .sparkle-particle {
+      position: fixed;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: particleFade 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      z-index: 9999;
+    }
+    @keyframes particleFade {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -120%) scale(0.2); }
+    }
+
+    /* Flickering Candle Flame Animation */
+    @keyframes flameFlicker {
+      0%, 100% { transform: scale(1) rotate(-1deg); opacity: 0.9; }
+      50% { transform: scale(1.15) rotate(1deg); opacity: 1; filter: drop-shadow(0 0 8px #f59e0b); }
+    }
+    .flame-flicker {
+      animation: flameFlicker 1.2s infinite alternate ease-in-out;
+    }
+
+    /* Vinyl Rotation Animation */
+    @keyframes spinVinyl {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin-vinyl {
+      animation: spinVinyl 4s linear infinite;
+    }
+    .paused-spin {
+      animation-play-state: paused !important;
+    }
+
+    /* Equalizer Wave Animation */
+    @keyframes bounceWave {
+      0%, 100% { height: 4px; }
+      50% { height: 16px; }
+    }
+    .wave-bar {
+      animation: bounceWave 1s ease-in-out infinite;
+    }
+    .wave-bar:nth-child(2) { animation-delay: 0.2s; }
+    .wave-bar:nth-child(3) { animation-delay: 0.4s; }
+    .wave-bar:nth-child(4) { animation-delay: 0.1s; }
+  </style>
+</head>
+
+<body class="bg-[#faf5f5] text-gray-800 min-h-screen overflow-x-hidden relative selection:bg-rose-100">
+
+  <audio id="bgMusic" loop preload="auto">
+    <source src="music/Perfect.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="fixed w-[40rem] h-[40rem] bg-rose-200/40 rounded-full blur-3xl -top-28 -left-28 pointer-events-none animate-float-1"></div>
+  <div class="fixed w-[40rem] h-[40rem] bg-purple-200/35 rounded-full blur-3xl -bottom-28 -right-28 pointer-events-none animate-float-2"></div>
+
+  <div id="musicController" class="fixed top-6 right-6 z-40 hidden items-center gap-3 bg-white/85 backdrop-blur-xl border border-rose-100 shadow-[0_10px_30px_rgba(244,114,182,0.18)] px-4 py-2 rounded-full transition-all duration-500">
+    <div id="vinylDisc" class="w-8 h-8 rounded-full bg-gradient-to-tr from-gray-900 via-gray-800 to-gray-900 border border-rose-300 flex items-center justify-center shadow-md animate-spin-vinyl paused-spin">
+      <div class="w-2.5 h-2.5 rounded-full bg-rose-400 border border-white"></div>
+    </div>
+    
+    <div class="text-left pr-1">
+      <div class="flex items-center gap-1.5">
+        <p class="text-xs font-bold text-gray-800">Perfect</p>
+        <span class="text-[10px] text-rose-500 font-semibold">• Ed Sheeran</span>
+      </div>
+      <div id="equalizer" class="flex items-end gap-0.5 h-2.5 mt-0.5 opacity-40">
+        <div class="w-0.5 bg-rose-500 rounded-full wave-bar"></div>
+        <div class="w-0.5 bg-pink-500 rounded-full wave-bar"></div>
+        <div class="w-0.5 bg-purple-500 rounded-full wave-bar"></div>
+        <div class="w-0.5 bg-rose-400 rounded-full wave-bar"></div>
+      </div>
+    </div>
+
+    <button onclick="toggleMusic()" id="musicToggleBtn" class="w-7 h-7 rounded-full bg-rose-500 hover:bg-rose-600 text-white flex items-center justify-center text-[10px] shadow-md transition active:scale-95">
+      ▶
+    </button>
+  </div>
+
+  <div id="lockScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-rose-100/95 via-pink-50/95 to-purple-100/95 backdrop-blur-2xl transition-all duration-700 px-6">
+    
+    <div class="relative z-10 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-14 max-w-4xl w-full">
+      
+      <div class="relative bg-white p-4 pb-6 rounded-2xl shadow-[0_20px_50px_rgba(244,114,182,0.18)] border border-white/80 transform -rotate-3 hover:rotate-0 hover:scale-105 transition duration-300 w-72 lg:w-80">
+        <div class="washi-tape"></div>
+        
+        <div class="w-full h-72 lg:h-80 bg-rose-50 rounded-xl mb-4 overflow-hidden border border-rose-100 relative group">
+          <img src="images/cover.jpg" 
+     style="object-position: 40% 20%;" 
+     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent"></div>
+          <span class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-rose-600 shadow-sm uppercase tracking-wider">
+            Birthday Edition
+          </span>
+        </div>
+
+        <p class="font-handwriting text-2xl text-gray-800 text-center leading-tight">
+          Where our story begins... 💕
+        </p>
+        <p class="text-[11px] text-gray-400 text-center font-medium mt-1 tracking-wide uppercase">
+          Locked Memory • 16.02
+        </p>
+      </div>
+
+      <div id="lockCard" class="bg-white/85 backdrop-blur-2xl border border-white/90 shadow-[0_25px_60px_-15px_rgba(244,114,182,0.22)] rounded-3xl p-7 max-w-sm w-full text-center transition-all duration-500">
+        
+        <div id="lockBadge" class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-rose-500/10 border border-rose-200 flex items-center justify-center text-2xl shadow-inner transition-transform duration-300">
+          🔒
+        </div>
+
+        <h1 class="text-2xl font-bold text-gray-900 font-serif-title">Enter Passcode</h1>
+        <p id="statusMsg" class="text-xs text-gray-500 mt-1 mb-5 transition-colors duration-300">
+          Type our secret 4-digit date to unlock
+        </p>
+
+        <div id="dotsContainer" class="flex justify-center gap-3.5 mb-5">
+          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-transparent transition-all duration-200"></div>
+          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-transparent transition-all duration-200"></div>
+          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-transparent transition-all duration-200"></div>
+          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-transparent transition-all duration-200"></div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5 max-w-[240px] mx-auto mb-5">
+          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('1')">1</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('2')">2</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('3')">3</button>
+          
+          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('4')">4</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('5')">5</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('6')">6</button>
+          
+          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('7')">7</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('8')">8</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('9')">9</button>
+          
+          <button class="key-btn h-12 rounded-2xl bg-rose-50/80 border border-rose-100 text-xs font-bold text-rose-500 shadow-sm tracking-wider" onclick="handleClear()">CLEAR</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('0')">0</button>
+          <button class="key-btn h-12 rounded-2xl bg-rose-50/80 border border-rose-100 text-base font-bold text-rose-500 shadow-sm" onclick="handleDelete()">⌫</button>
+        </div>
+
+        <div class="text-center">
+          <button id="hintBtn" onclick="handleHintClick()" class="pulse-glow-btn inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-rose-100/90 to-pink-100/90 hover:from-rose-200 hover:to-pink-200 border border-rose-200 text-rose-600 rounded-full text-xs font-semibold tracking-wide transition-all transform hover:scale-105 active:scale-95 shadow-sm">
+            <span id="hintBtnText">Need a hint?</span>
+            <span id="hintBtnIcon" class="text-sm">💡</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="hintModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
+    <div id="hintCard" class="bg-white/95 backdrop-blur-xl border border-rose-100 shadow-2xl rounded-3xl p-6 max-w-xs w-full mx-4 text-center transform scale-90 transition-all duration-300">
+      <div id="modalIcon" class="w-12 h-12 mx-auto mb-3 bg-rose-100 border border-rose-200 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
+        💌
+      </div>
+      <h3 id="modalTitle" class="font-serif-title font-bold text-lg text-gray-800 mb-1">A Little Clue</h3>
+      <p id="modalBody" class="text-xs text-gray-600 leading-relaxed mb-5 px-2">
+        Think about the day of our special date! Format: <span class="font-bold text-rose-500 font-mono">DDMM</span> 💕
+      </p>
+      <button onclick="closeHintModal()" id="modalBtn" class="w-full py-2.5 bg-gradient-to-r from-rose-500 to-pink-500 text-white font-semibold rounded-xl text-xs shadow-md shadow-rose-500/20 hover:shadow-rose-500/35 hover:scale-[1.02] active:scale-95 transition">
+        Got it! Let me try ✨
+      </button>
+    </div>
+  </div>
+
+  <main id="mainContent" class="hidden opacity-0 transition-opacity duration-1000 min-h-screen py-16 px-6 lg:px-12 max-w-5xl mx-auto relative z-10">
+    
+    <header class="text-center mb-16 relative">
+      <div class="inline-flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-rose-100/90 via-pink-100/90 to-purple-100/90 border border-rose-200/80 text-rose-600 rounded-full text-xs font-bold tracking-widest uppercase mb-5 shadow-sm">
+        <span>✨</span>
+        <span>For My Love</span>
+        <span>👑</span>
+      </div>
+      
+      <h1 class="text-5xl lg:text-7xl font-bold text-gray-900 font-serif-title tracking-tight mb-4 leading-tight">
+        Happy Birthday, <span class="italic text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500">Dixit Ji</span>
+      </h1>
+      
+      <p class="text-sm lg:text-base text-gray-500 max-w-xl mx-auto leading-relaxed">
+        These are small gift cards for you.
+      </p>
+    </header>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-4xl mx-auto mb-24">
+      
+      <div class="story-card-container cursor-pointer group" onclick="toggleCardFlip(this, event)">
+        <div class="story-card-inner shadow-xl hover:shadow-2xl transition-all duration-300">
+          
+          <div class="story-card-front bg-white p-5 border border-rose-100 flex flex-col justify-between">
+            <div class="washi-tape"></div>
+            
+            <div class="w-full h-72 bg-rose-50 rounded-2xl overflow-hidden border border-gray-100 relative mt-2 group-hover:scale-[1.01] transition duration-500">
+              <img src="images/photo1.jpg" alt="Memory 1" class="w-full h-full object-cover">
+              <span class="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-bold text-rose-600 shadow-sm">
+                📸 Memory 01
+              </span>
+            </div>
+
+            <div class="text-center my-auto">
+              <p class="font-handwriting text-2xl text-gray-800">Where it all began 💫</p>
+              <p class="text-xs text-gray-400 mt-0.5">The first smile that stole my heart</p>
+            </div>
+
+            <div class="btn-action w-full py-3 px-4 bg-gradient-to-r from-rose-500 via-pink-500 to-rose-500 bg-[length:200%_auto] hover:bg-right text-white rounded-2xl text-xs font-bold tracking-wide shadow-md shadow-rose-500/25 group-hover:shadow-rose-500/40 flex items-center justify-between transition-all">
+              <span class="flex items-center gap-2">
+                <span>✨</span>
+                <span>Unfold Memory Lane</span>
+              </span>
+              <span class="btn-flip-icon w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs">
+                ↺
+              </span>
+            </div>
+          </div>
+
+          <div class="story-card-back bg-gradient-to-br from-rose-50/95 via-pink-50/95 to-purple-50/95 p-6 border border-rose-200 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3 border-b border-rose-200/60 pb-2">
+                <h3 class="font-serif-title font-bold text-gray-800 text-lg">Favorite Memories 🌸</h3>
+                <span class="text-[11px] font-bold text-rose-500 bg-white px-2.5 py-0.5 rounded-full border border-rose-100 shadow-sm">Album</span>
+              </div>
+
+              <!-- Mini Snaps Row (Zoomed Out 3:4 Camera Ratio) -->
+<div class="grid grid-cols-2 gap-3 mb-2.5">
+  <!-- Left Mini Snap -->
+  <div class="bg-white p-1.5 rounded-2xl shadow-sm border border-rose-100">
+    <div class="w-full aspect-[3/4] rounded-xl overflow-hidden mb-1 bg-rose-50">
+      <img src="images/photo2.jpg" 
+           alt="Memory 2" 
+           class="w-full h-full object-cover object-center hover:scale-105 transition duration-300">
+    </div>
+    <p class="font-handwriting text-sm text-gray-700 text-center">Golden Hour Glow 🌅</p>
+  </div>
+
+  <!-- Right Mini Snap -->
+  <div class="bg-white p-1.5 rounded-2xl shadow-sm border border-rose-100">
+    <div class="w-full aspect-[3/4] rounded-xl overflow-hidden mb-1 bg-rose-50">
+      <img src="images/photo3.jpg" 
+           alt="Memory 3" 
+           class="w-full h-full object-cover object-center hover:scale-105 transition duration-300">
+    </div>
+    <p class="font-handwriting text-sm text-gray-700 text-center">10/10 Pretty 💖</p>
+  </div>
+</div>
+
+              <p class="text-xs text-gray-600 leading-relaxed italic bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-rose-100 shadow-sm">
+                "These are not just pictures, they are moments frozen in time. Every moment we spend together becomes a more beautiful memory than the last. I just can't help but smile every time I think of you. You are my best memory!" 💕
+              </p>
+            </div>
+
+            <div class="btn-action w-full py-2.5 px-4 bg-white hover:bg-rose-50/80 text-rose-600 border border-rose-200/80 rounded-2xl text-xs font-bold shadow-sm flex items-center justify-center gap-2 transition-all">
+              <span class="btn-flip-icon text-sm">↩</span>
+              <span>Flip Back to Cover</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+     <!-- ================= CARD 2: LITTLE REMINDERS (FLIP) ================= -->
+<div class="story-card-container cursor-pointer group" onclick="toggleCardFlip(this, event)">
+  <div class="story-card-inner shadow-xl hover:shadow-2xl transition-all duration-300">
+    
+    <!-- FRONT: Sunset Heart Cover Polaroid -->
+    <div class="story-card-front bg-white p-5 border border-rose-100 flex flex-col justify-between text-center">
+      <div class="washi-tape"></div>
+      
+      <!-- Sunset Photo Frame -->
+      <div class="w-full aspect-[4/5] bg-rose-50 rounded-2xl overflow-hidden border border-gray-100 relative mt-2 group-hover:scale-[1.01] transition duration-500">
+        <img src="images/photo4.jpg" 
+             alt="Sunset Heart" 
+             class="w-full h-full object-cover object-center">
+        <span class="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-bold text-rose-600 shadow-sm">
+          💌 Secret Note
+        </span>
+      </div>
+
+      <div class="text-center my-auto">
+        <p class="font-handwriting text-2xl text-gray-800">Little Reminders ✨</p>
+        <p class="text-xs text-gray-500 mt-0.5">3 small reasons why you are my absolute favorite person in this world.</p>
+      </div>
+
+      <!-- Attractive Action Button -->
+      <div class="btn-action w-full py-3 px-4 bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 text-white rounded-2xl text-xs font-bold tracking-wide shadow-md shadow-pink-500/25 group-hover:shadow-pink-500/40 flex items-center justify-between transition-all">
+        <span class="flex items-center gap-2">
+          <span>💌</span>
+          <span>Open Love Letter</span>
+        </span>
+        <span class="btn-flip-icon w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs">
+          ↺
+        </span>
+      </div>
+    </div>
+
+    <!-- BACK: 3 Reasons Content -->
+   <!-- BACK: 3 Reasons Content (Filled & Aesthetic Layout) -->
+<div class="story-card-back bg-gradient-to-b from-white via-rose-50/20 to-pink-50/30 p-5 lg:p-6 border border-rose-100 flex flex-col justify-between">
+  <div>
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b border-rose-100 pb-2.5 mb-3">
+      <div>
+        <h3 class="font-serif-title font-bold text-gray-800 text-lg flex items-center gap-1.5">
+          <span>Why I Love You</span>
+          <span class="text-base">✨</span>
+        </h3>
+        <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">Little pieces of my heart</p>
+      </div>
+      <span class="text-[11px] font-bold text-rose-500 bg-rose-50 border border-rose-100 px-3 py-1 rounded-full shadow-sm">
+        3 Reasons
+      </span>
+    </div>
+
+    <!-- 3 Reason Cards -->
+    <div class="space-y-3">
+      <!-- Reason 1 -->
+      <div class="p-3 bg-white/90 rounded-2xl border border-rose-100/90 shadow-sm border-l-4 border-l-rose-400 transition-all hover:translate-x-1">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-6 h-6 rounded-lg bg-rose-100/80 flex items-center justify-center text-xs shadow-inner">🍯</span>
+          <h4 class="text-xs font-bold text-gray-800 tracking-wide">Your Warm Heart</h4>
+        </div>
+        <p class="text-[11px] text-gray-600 leading-relaxed pl-8">
+          You care so genuinely for the people around you. Being with you feels like home. I feel safe, calm, and deeply loved whenever I'm with you.
+        </p>
+      </div>
+
+      <!-- Reason 2 -->
+      <div class="p-3 bg-white/90 rounded-2xl border border-purple-100/90 shadow-sm border-l-4 border-l-purple-400 transition-all hover:translate-x-1">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-6 h-6 rounded-lg bg-purple-100/80 flex items-center justify-center text-xs shadow-inner">✨</span>
+          <h4 class="text-xs font-bold text-gray-800 tracking-wide">Your Laugh</h4>
+        </div>
+        <p class="text-[11px] text-gray-600 leading-relaxed pl-8">
+          The sound you make when you laugh makes my whole day brighter. Even with just a single smile, you have this way of turning a bad day into a good one.
+        </p>
+      </div>
+
+      <!-- Reason 3 -->
+      <div class="p-3 bg-white/90 rounded-2xl border border-pink-100/90 shadow-sm border-l-4 border-l-pink-400 transition-all hover:translate-x-1">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-6 h-6 rounded-lg bg-pink-100/80 flex items-center justify-center text-xs shadow-inner">💫</span>
+          <h4 class="text-xs font-bold text-gray-800 tracking-wide">Your Ambition</h4>
+        </div>
+        <p class="text-[11px] text-gray-600 leading-relaxed pl-8">
+          Watching you pursue what you love inspires me constantly. I'll always cheer for you and stay right by your side, even when life gets tough.
+        </p>
+      </div>
+    </div>
+
+    <!-- Sweet Bottom Accent Banner -->
+    <div class="mt-3 p-2 bg-rose-50/80 rounded-xl border border-dashed border-rose-200 text-center">
+      <p class="font-handwriting text-base text-rose-500 leading-none">
+        "...and a million other little reasons every single day." 💕
+      </p>
+    </div>
+  </div>
+
+  <!-- Return Button -->
+  <div class="btn-action w-full py-2.5 px-4 bg-white hover:bg-rose-50/80 text-rose-600 border border-rose-200/90 rounded-2xl text-xs font-bold shadow-sm flex items-center justify-center gap-2 transition-all mt-2 cursor-pointer">
+    <span class="btn-flip-icon text-sm">↩</span>
+    <span>Flip Back to Cover</span>
+  </div>
+</div>
+
+  </div>
+</div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <section class="relative bg-white/80 backdrop-blur-xl border border-rose-100/90 p-10 lg:p-14 rounded-3xl text-center max-w-2xl mx-auto shadow-[0_20px_50px_rgba(244,114,182,0.12)] mb-20 overflow-hidden">
+      
+      <div class="relative w-24 h-24 mx-auto mb-4 flex items-center justify-center">
+        <span id="candleFlame" class="flame-flicker absolute -top-1 text-3xl">🔥</span>
+        <span id="cakeIcon" class="text-7xl transition-transform duration-300">🎂</span>
+      </div>
+
+      <h3 class="text-3xl font-serif-title font-bold text-gray-800 mb-2">Make a Birthday Wish</h3>
+      <p id="cakeInstruction" class="text-xs lg:text-sm text-gray-500 mb-8 max-w-md mx-auto leading-relaxed">
+        Close your eyes, make a special wish for this year, and click the button to blow out your candle!
+      </p>
+
+      <button id="blowCandleBtn" onclick="blowCandles()" class="px-8 py-3.5 bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 text-white font-bold rounded-2xl shadow-lg shadow-rose-500/25 hover:shadow-rose-500/40 hover:scale-105 active:scale-95 transition">
+        Blow Out the Candle 🕯️✨
+      </button>
+
+      <div id="secretLetter" class="hidden mt-8 pt-8 border-t border-rose-100/80 text-left transition-all duration-700">
+        <div class="bg-rose-50/70 p-6 rounded-2xl border border-rose-100">
+          <p class="font-handwriting text-2xl text-gray-800 leading-relaxed">
+            "Happy Birthday Damru. Thank you for simply being you. May this year bring you all the endless happiness, laughter, and success you deserve. I love you more than words can say!" 💕
+          </p>
+          <p class="font-serif-title text-xs font-bold text-rose-500 text-right mt-3 tracking-wider uppercase">
+            — Forever Yours ✨
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="text-center text-xs text-gray-400 pb-12 font-medium tracking-wide">
+      Built with endless love for you • 06.09 Birthday Edition 💕
+    </footer>
+  </main>
+
+  <script>
+    const PASSCODE = "1602"; 
+
+    let currentPin = "";
+    let isLocked = false;
+    let hintClickCount = 0;
+
+    const dots = document.querySelectorAll(".dot");
+    const dotsContainer = document.getElementById("dotsContainer");
+    const statusMsg = document.getElementById("statusMsg");
+    const lockBadge = document.getElementById("lockBadge");
+    const lockScreen = document.getElementById("lockScreen");
+    const mainContent = document.getElementById("mainContent");
+    
+    // Music Elements
+    const bgMusic = document.getElementById("bgMusic");
+    const musicController = document.getElementById("musicController");
+    const vinylDisc = document.getElementById("vinylDisc");
+    const musicToggleBtn = document.getElementById("musicToggleBtn");
+    const equalizer = document.getElementById("equalizer");
+
+    // Modal Elements
+    const hintModal = document.getElementById("hintModal");
+    const hintCard = document.getElementById("hintCard");
+    const modalIcon = document.getElementById("modalIcon");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalBody = document.getElementById("modalBody");
+    const modalBtn = document.getElementById("modalBtn");
+    
+    // Hint Button Elements
+    const hintBtnText = document.getElementById("hintBtnText");
+    const hintBtnIcon = document.getElementById("hintBtnIcon");
+
+    // Card Flip Helper
+    function toggleCardFlip(cardElement, event) {
+      if (event && (event.target.tagName === 'IFRAME' || event.target.tagName === 'BUTTON')) {
+        return;
+      }
+      cardElement.classList.toggle("flipped");
+    }
+
+    function renderDots() {
+      dots.forEach((dot, idx) => {
+        if (idx < currentPin.length) {
+          dot.classList.add("bg-rose-500", "border-rose-500", "scale-110", "shadow-[0_0_12px_rgba(244,63,94,0.55)]");
+          dot.classList.remove("bg-transparent", "border-rose-300");
+        } else {
+          dot.classList.remove("bg-rose-500", "border-rose-500", "scale-110", "shadow-[0_0_12px_rgba(244,63,94,0.55)]");
+          dot.classList.add("bg-transparent", "border-rose-300");
+        }
+      });
+    }
+
+    function handleInput(digit) {
+      if (isLocked || currentPin.length >= PASSCODE.length) return;
+      currentPin += digit;
+      renderDots();
+
+      if (currentPin.length === PASSCODE.length) {
+        isLocked = true;
+        setTimeout(validatePasscode, 150);
+      }
+    }
+
+    function handleDelete() {
+      if (isLocked) return;
+      currentPin = currentPin.slice(0, -1);
+      renderDots();
+    }
+
+    function handleClear() {
+      if (isLocked) return;
+      currentPin = "";
+      renderDots();
+    }
+
+    function validatePasscode() {
+      if (currentPin === PASSCODE) {
+        lockBadge.innerText = "💖";
+        lockBadge.classList.add("scale-125", "bg-rose-100", "border-rose-300");
+        statusMsg.innerText = "Access Granted! Unwrapping your surprise...";
+        statusMsg.className = "text-xs font-semibold text-rose-600 mt-1 mb-5";
+
+        confetti({
+          particleCount: 160,
+          spread: 100,
+          origin: { y: 0.6 },
+          colors: ['#ff6b81', '#f472b6', '#c084fc', '#ffd166']
+        });
+
+        startMusicPlayback();
+
+        setTimeout(() => {
+          lockScreen.classList.add("opacity-0", "pointer-events-none", "scale-105");
+          setTimeout(() => {
+            lockScreen.style.display = "none";
+            mainContent.classList.remove("hidden");
+            musicController.classList.remove("hidden");
+            musicController.classList.add("flex");
+            setTimeout(() => {
+              mainContent.classList.remove("opacity-0");
+            }, 50);
+          }, 600);
+        }, 800);
+
+      } else {
+        dotsContainer.classList.add("shake-anim");
+        statusMsg.innerText = "Wrong passcode! Try again, silly 🥺";
+        statusMsg.className = "text-xs font-semibold text-rose-500 mt-1 mb-5";
+
+        setTimeout(() => {
+          dotsContainer.classList.remove("shake-anim");
+          currentPin = "";
+          renderDots();
+          statusMsg.innerText = "Type our secret 4-digit date to unlock";
+          statusMsg.className = "text-xs text-gray-500 mt-1 mb-5";
+          isLocked = false;
+        }, 800);
+      }
+    }
+
+    // Audio Playback Controls
+    function startMusicPlayback() {
+      bgMusic.play().then(() => {
+        vinylDisc.classList.remove("paused-spin");
+        equalizer.classList.remove("opacity-40");
+        equalizer.classList.add("opacity-100");
+        musicToggleBtn.innerText = "⏸";
+      }).catch(() => {
+        vinylDisc.classList.add("paused-spin");
+        musicToggleBtn.innerText = "▶";
+      });
+    }
+
+    function toggleMusic() {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        vinylDisc.classList.remove("paused-spin");
+        equalizer.classList.remove("opacity-40");
+        equalizer.classList.add("opacity-100");
+        musicToggleBtn.innerText = "⏸";
+      } else {
+        bgMusic.pause();
+        vinylDisc.classList.add("paused-spin");
+        equalizer.classList.add("opacity-40");
+        equalizer.classList.remove("opacity-100");
+        musicToggleBtn.innerText = "▶";
+      }
+    }
+
+    // Dynamic Hint System
+    function handleHintClick() {
+      if (hintClickCount === 0) {
+        modalIcon.innerText = "💌";
+        modalTitle.innerText = "A Little Clue";
+        modalBody.innerHTML = "Think about the day of our special date! Format: <span class='font-bold text-rose-500 font-mono'>DDMM</span> 💕";
+        modalBtn.innerText = "Got it! Let me try ✨";
+        
+        hintBtnText.innerText = "Press if u need my help";
+        hintBtnIcon.innerText = "🥺";
+      } else {
+        modalIcon.innerText = "🤫";
+        modalTitle.innerText = "Okay, here to help!";
+        modalBody.innerHTML = "Fine, I won't keep you waiting: The secret passcode is <span class='font-bold text-rose-600 font-mono text-sm bg-rose-50 px-2 py-0.5 rounded'>1602</span>! Type it in cutie 💕";
+        modalBtn.innerText = "Type it in for me 🥰";
+      }
+
+      hintClickCount++;
+      openHintModal();
+    }
+
+    function openHintModal() {
+      hintModal.classList.remove("opacity-0", "pointer-events-none");
+      hintCard.classList.remove("scale-90");
+      hintCard.classList.add("scale-100");
+    }
+
+    function closeHintModal() {
+      hintModal.classList.add("opacity-0", "pointer-events-none");
+      hintCard.classList.remove("scale-100");
+      hintCard.classList.add("scale-90");
+    }
+
+    // Candle Blowing Mechanics
+    function blowCandles() {
+      const flame = document.getElementById("candleFlame");
+      const btn = document.getElementById("blowCandleBtn");
+      const letter = document.getElementById("secretLetter");
+      const cakeInstruction = document.getElementById("cakeInstruction");
+
+      flame.classList.remove("flame-flicker");
+      flame.innerText = "💨";
+      setTimeout(() => flame.style.opacity = '0', 500);
+
+      confetti({
+        particleCount: 220,
+        spread: 130,
+        origin: { y: 0.65 },
+        colors: ['#ff6b81', '#f472b6', '#c084fc', '#ffd166', '#a7f3d0']
+      });
+
+      btn.innerText = " Happy Birthday! 💖";
+      btn.disabled = true;
+      btn.classList.add("opacity-75", "cursor-default");
+
+      cakeInstruction.innerText = "✨ Your wish is officially locked in! Here is a note for you:";
+      letter.classList.remove("hidden");
+    }
+
+    // Physical Laptop Keyboard support
+    window.addEventListener("keydown", (e) => {
+      if (isLocked) return;
+      if (!hintModal.classList.contains("pointer-events-none")) {
+        if (e.key === "Escape" || e.key === "Enter") closeHintModal();
+        return;
+      }
+      if (e.key >= "0" && e.key <= "9") handleInput(e.key);
+      else if (e.key === "Backspace") handleDelete();
+      else if (e.key === "Escape") handleClear();
+    });
+
+    // Mouse sparkle trail
+    window.addEventListener("mousemove", (e) => {
+      if (Math.random() > 0.65) {
+        const particle = document.createElement("span");
+        particle.className = "sparkle-particle text-sm";
+        particle.style.left = `${e.clientX}px`;
+        particle.style.top = `${e.clientY}px`;
+        particle.innerText = ['✨', '💖', '🌸', '💫'][Math.floor(Math.random() * 4)];
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 900);
+      }
+    });
+  </script>
+</body>
+</html>
