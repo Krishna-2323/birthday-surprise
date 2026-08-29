@@ -69,6 +69,41 @@
     .pulse-glow-btn {
       animation: pulseGlow 2.5s infinite;
     }
+    /* Floating Birthday Balloons */
+@keyframes balloonFloat1 {
+  0%, 100% { transform: translateY(0px) rotate(-3deg); }
+  50% { transform: translateY(-18px) rotate(4deg); }
+}
+@keyframes balloonFloat2 {
+  0%, 100% { transform: translateY(0px) rotate(3deg); }
+  50% { transform: translateY(-24px) rotate(-4deg); }
+}
+.animate-balloon-1 { animation: balloonFloat1 6s ease-in-out infinite; }
+.animate-balloon-2 { animation: balloonFloat2 7.5s ease-in-out infinite 1s; }
+.animate-balloon-3 { animation: balloonFloat1 8s ease-in-out infinite 2s; }
+
+/* Glowing Festive Border */
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(244, 114, 182, 0.4); box-shadow: 0 0 25px rgba(244, 114, 182, 0.2); }
+  50% { border-color: rgba(192, 132, 252, 0.5); box-shadow: 0 0 35px rgba(192, 132, 252, 0.35); }
+}
+.festive-glow-card {
+  animation: borderGlow 4s ease-in-out infinite;
+}
+
+/* Shimmer Tag */
+.shimmer-text {
+  background: linear-gradient(90deg, #ec4899, #8b5cf6, #f59e0b, #ec4899);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 5s ease infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
     /* Washi Tape Accent */
     .washi-tape {
@@ -169,6 +204,49 @@
     .wave-bar:nth-child(2) { animation-delay: 0.2s; }
     .wave-bar:nth-child(3) { animation-delay: 0.4s; }
     .wave-bar:nth-child(4) { animation-delay: 0.1s; }
+    /* Dynamic Shifting Aurora Gradient */
+@keyframes auroraShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animated-festive-bg {
+  background: linear-gradient(-45deg, #ffd1dc, #fbcfe8, #ede9fe, #fef08a, #fed7aa, #f472b6, #e9d5ff);
+  background-size: 350% 350%;
+  animation: auroraShift 14s ease infinite;
+}
+
+/* Floating celebratory elements */
+@keyframes floatDrift1 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(20px, -35px) rotate(12deg); }
+}
+@keyframes floatDrift2 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-25px, -45px) rotate(-14deg); }
+}
+@keyframes twinkleGlow {
+  0%, 100% { opacity: 0.35; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.3); filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.9)); }
+}
+
+.anim-drift-1 { animation: floatDrift1 7s ease-in-out infinite; }
+.anim-drift-2 { animation: floatDrift2 8.5s ease-in-out infinite 1s; }
+.anim-drift-3 { animation: floatDrift1 10s ease-in-out infinite 2s; }
+.anim-twinkle { animation: twinkleGlow 2.5s ease-in-out infinite; }
+.anim-twinkle-delay { animation: twinkleGlow 3.5s ease-in-out infinite 1.2s; }
+/* Playful Question Card Styling */
+@keyframes heartBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+}
+.heart-bounce {
+  animation: heartBounce 1.4s ease-in-out infinite;
+}
+
+#noBtn {
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
   </style>
 </head>
 
@@ -204,69 +282,110 @@
     </button>
   </div>
 
-  <div id="lockScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-rose-100/95 via-pink-50/95 to-purple-100/95 backdrop-blur-2xl transition-all duration-700 px-6">
+  <!-- ================= 01. PASSCODE LOCK SCREEN OVERLAY ================= -->
+  <!-- ================= 01. PASSCODE LOCK SCREEN OVERLAY ================= -->
+  <!-- ================= 01. PASSCODE LOCK SCREEN OVERLAY ================= -->
+  <div id="lockScreen" class="fixed inset-0 z-50 flex items-center justify-center animated-festive-bg backdrop-blur-3xl transition-all duration-700 px-6 overflow-hidden">
     
-    <div class="relative z-10 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-14 max-w-4xl w-full">
+    <!-- Ambient Glowing Blurs for Visual Depth -->
+    <div class="absolute -top-24 -left-24 w-96 h-96 bg-rose-400/40 rounded-full blur-3xl pointer-events-none animate-float-1"></div>
+    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-purple-400/35 rounded-full blur-3xl pointer-events-none animate-float-2"></div>
+    <div class="absolute top-1/2 -left-20 w-80 h-80 bg-amber-300/30 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Floating Birthday Icons & Festive Balloons -->
+    <div class="absolute top-10 left-12 text-5xl select-none opacity-80 anim-drift-1 pointer-events-none">🎈</div>
+    <div class="absolute top-14 right-16 text-6xl select-none opacity-75 anim-drift-2 pointer-events-none">🎈</div>
+    <div class="absolute bottom-14 left-16 text-5xl select-none opacity-70 anim-drift-3 pointer-events-none">🎁</div>
+    <div class="absolute bottom-16 right-20 text-5xl select-none opacity-75 anim-drift-1 pointer-events-none">🎂</div>
+    
+    <!-- Twinkling Sparkles & Floating Hearts -->
+    <div class="absolute top-1/4 left-1/4 text-3xl select-none anim-twinkle pointer-events-none">✨</div>
+    <div class="absolute bottom-1/3 right-1/4 text-3xl select-none anim-twinkle-delay pointer-events-none">✨</div>
+    <div class="absolute top-1/3 right-12 text-3xl select-none opacity-60 anim-drift-2 pointer-events-none">💖</div>
+    <div class="absolute bottom-1/4 left-10 text-3xl select-none opacity-60 anim-drift-1 pointer-events-none">🌸</div>
+    <div class="absolute top-20 left-1/2 -translate-x-1/2 text-2xl select-none anim-twinkle pointer-events-none">⭐</div>
+
+    <!-- Main Container -->
+    <div class="relative z-10 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 max-w-5xl w-full">
       
-      <div class="relative bg-white p-4 pb-6 rounded-2xl shadow-[0_20px_50px_rgba(244,114,182,0.18)] border border-white/80 transform -rotate-3 hover:rotate-0 hover:scale-105 transition duration-300 w-72 lg:w-80">
-        <div class="washi-tape"></div>
+      <!-- LEFT SIDE: Auto-Fitting Polaroid Frame -->
+      <div class="relative bg-white/95 backdrop-blur-md p-4 pb-6 rounded-3xl shadow-[0_25px_60px_-10px_rgba(244,114,182,0.35)] border-2 border-white/80 transform -rotate-2 hover:rotate-0 hover:scale-105 transition-all duration-300 w-80 sm:w-96 lg:w-[26rem]">
         
-        <div class="w-full h-72 lg:h-80 bg-rose-50 rounded-xl mb-4 overflow-hidden border border-rose-100 relative group">
+        <!-- Festive Washi Tape -->
+        <div class="washi-tape flex items-center justify-center text-[10px] font-bold text-amber-700 tracking-wider">
+          🎉 SPECIAL DAY
+        </div>
+        
+        <!-- Auto-Fitting Photo Frame -->
+        <div class="w-full bg-rose-50/60 rounded-2xl mb-4 overflow-hidden border border-rose-100 relative group flex items-center justify-center p-1 min-h-[280px] max-h-[420px]">
           <img src="images/cover.jpg" 
-     style="object-position: 40% 20%;" 
-     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent"></div>
-          <span class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-rose-600 shadow-sm uppercase tracking-wider">
-            Birthday Edition
+               alt="A secret memory" 
+               class="w-full h-auto max-h-[390px] object-contain rounded-xl group-hover:scale-[1.02] transition duration-500">
+          
+          <span class="absolute bottom-3 right-3 bg-gradient-to-r from-rose-500 to-pink-500 text-white backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold shadow-md uppercase tracking-wider flex items-center gap-1">
+            <span>🎂</span>
+            <span>Birthday Edition</span>
           </span>
         </div>
 
         <p class="font-handwriting text-2xl text-gray-800 text-center leading-tight">
           Where our story begins... 💕
         </p>
-        <p class="text-[11px] text-gray-400 text-center font-medium mt-1 tracking-wide uppercase">
-          Locked Memory • 16.02
+        <p class="text-[11px] text-gray-400 text-center font-medium mt-1 tracking-wider uppercase">
+          Locked Memory • 16.02 ✨
         </p>
       </div>
 
-      <div id="lockCard" class="bg-white/85 backdrop-blur-2xl border border-white/90 shadow-[0_25px_60px_-15px_rgba(244,114,182,0.22)] rounded-3xl p-7 max-w-sm w-full text-center transition-all duration-500">
+      <!-- RIGHT SIDE: Passcode Card -->
+      <div id="lockCard" class="festive-glow-card bg-white/95 backdrop-blur-2xl border-2 border-white/80 shadow-[0_30px_70px_-15px_rgba(244,114,182,0.35)] rounded-3xl p-7 max-w-sm w-full text-center transition-all duration-500">
         
-        <div id="lockBadge" class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-rose-500/10 border border-rose-200 flex items-center justify-center text-2xl shadow-inner transition-transform duration-300">
-          🔒
+        <!-- Top Festive Tag -->
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-rose-100/90 via-purple-100/90 to-pink-100/90 border border-rose-200 text-rose-600 rounded-full text-[11px] font-bold tracking-wider uppercase mb-3 shadow-sm">
+          <span>🎉</span>
+          <span class="shimmer-text">Birthday Surprise</span>
+          <span>✨</span>
         </div>
 
-        <h1 class="text-2xl font-bold text-gray-900 font-serif-title">Enter Passcode</h1>
-        <p id="statusMsg" class="text-xs text-gray-500 mt-1 mb-5 transition-colors duration-300">
-          Type our secret 4-digit date to unlock
+        <!-- Lock / Gift Icon Badge -->
+        <div id="lockBadge" class="w-16 h-16 mx-auto mb-2 rounded-2xl bg-gradient-to-tr from-rose-500/15 via-purple-500/10 to-amber-500/10 border border-rose-200 flex items-center justify-center text-3xl shadow-inner transition-transform duration-300">
+          🎁
+        </div>
+
+        <h1 class="text-2xl font-bold text-gray-900 font-serif-title">Enter Secret Date</h1>
+        <p id="statusMsg" class="text-xs text-gray-500 mt-1 mb-4 transition-colors duration-300">
+          Type our secret 4-digit code to unlock your gift 💕
         </p>
 
-        <div id="dotsContainer" class="flex justify-center gap-3.5 mb-5">
-          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-transparent transition-all duration-200"></div>
-          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-transparent transition-all duration-200"></div>
-          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-transparent transition-all duration-200"></div>
-          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-transparent transition-all duration-200"></div>
+        <!-- Passcode Glowing Dots -->
+        <div id="dotsContainer" class="flex justify-center gap-3.5 mb-5 p-2 bg-rose-50/70 rounded-2xl max-w-[200px] mx-auto border border-rose-100">
+          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all duration-200"></div>
+          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all duration-200"></div>
+          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all duration-200"></div>
+          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all duration-200"></div>
         </div>
 
-        <div class="grid grid-cols-3 gap-2.5 max-w-[240px] mx-auto mb-5">
-          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('1')">1</button>
-          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('2')">2</button>
-          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('3')">3</button>
+        <!-- Keypad Grid with Colorful Accents -->
+        <div class="grid grid-cols-3 gap-2.5 max-w-[240px] mx-auto mb-4">
+          <button class="key-btn h-12 rounded-2xl bg-white/95 hover:bg-rose-50 border border-rose-100 text-lg font-bold text-gray-700 shadow-sm" onclick="handleInput('1')">1</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/95 hover:bg-rose-50 border border-rose-100 text-lg font-bold text-gray-700 shadow-sm" onclick="handleInput('2')">2</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/95 hover:bg-rose-50 border border-rose-100 text-lg font-bold text-gray-700 shadow-sm" onclick="handleInput('3')">3</button>
           
-          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('4')">4</button>
-          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('5')">5</button>
-          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('6')">6</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/95 hover:bg-rose-50 border border-rose-100 text-lg font-bold text-gray-700 shadow-sm" onclick="handleInput('4')">4</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/95 hover:bg-rose-50 border border-rose-100 text-lg font-bold text-gray-700 shadow-sm" onclick="handleInput('5')">5</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/95 hover:bg-rose-50 border border-rose-100 text-lg font-bold text-gray-700 shadow-sm" onclick="handleInput('6')">6</button>
           
-          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('7')">7</button>
-          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('8')">8</button>
-          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('9')">9</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/95 hover:bg-rose-50 border border-rose-100 text-lg font-bold text-gray-700 shadow-sm" onclick="handleInput('7')">7</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/95 hover:bg-rose-50 border border-rose-100 text-lg font-bold text-gray-700 shadow-sm" onclick="handleInput('8')">8</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/95 hover:bg-rose-50 border border-rose-100 text-lg font-bold text-gray-700 shadow-sm" onclick="handleInput('9')">9</button>
           
-          <button class="key-btn h-12 rounded-2xl bg-rose-50/80 border border-rose-100 text-xs font-bold text-rose-500 shadow-sm tracking-wider" onclick="handleClear()">CLEAR</button>
-          <button class="key-btn h-12 rounded-2xl bg-white/90 border border-rose-100 text-lg font-semibold text-gray-700 shadow-sm" onclick="handleInput('0')">0</button>
-          <button class="key-btn h-12 rounded-2xl bg-rose-50/80 border border-rose-100 text-base font-bold text-rose-500 shadow-sm" onclick="handleDelete()">⌫</button>
+          <button class="key-btn h-12 rounded-2xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-[11px] font-extrabold text-rose-500 shadow-sm tracking-wider" onclick="handleClear()">CLEAR</button>
+          <button class="key-btn h-12 rounded-2xl bg-white/95 hover:bg-rose-50 border border-rose-100 text-lg font-bold text-gray-700 shadow-sm" onclick="handleInput('0')">0</button>
+          <button class="key-btn h-12 rounded-2xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-base font-extrabold text-rose-500 shadow-sm" onclick="handleDelete()">⌫</button>
         </div>
 
+        <!-- Dynamic Hint Button -->
         <div class="text-center">
-          <button id="hintBtn" onclick="handleHintClick()" class="pulse-glow-btn inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-rose-100/90 to-pink-100/90 hover:from-rose-200 hover:to-pink-200 border border-rose-200 text-rose-600 rounded-full text-xs font-semibold tracking-wide transition-all transform hover:scale-105 active:scale-95 shadow-sm">
+          <button id="hintBtn" onclick="handleHintClick()" class="pulse-glow-btn inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-rose-500/15 via-pink-500/15 to-purple-500/15 hover:from-rose-500/25 hover:to-purple-500/25 border border-rose-200 text-rose-600 rounded-full text-xs font-bold tracking-wide transition-all transform hover:scale-105 active:scale-95 shadow-sm">
             <span id="hintBtnText">Need a hint?</span>
             <span id="hintBtnIcon" class="text-sm">💡</span>
           </button>
@@ -495,32 +614,86 @@
 
     </section>
 
-    <section class="relative bg-white/80 backdrop-blur-xl border border-rose-100/90 p-10 lg:p-14 rounded-3xl text-center max-w-2xl mx-auto shadow-[0_20px_50px_rgba(244,114,182,0.12)] mb-20 overflow-hidden">
+    <!-- ================= 03. INTERACTIVE BIRTHDAY CAKE ================= -->
+    <section class="relative bg-white/85 backdrop-blur-xl border border-rose-100/90 p-8 lg:p-12 rounded-3xl text-center max-w-2xl mx-auto shadow-[0_20px_50px_rgba(244,114,182,0.14)] mb-14 overflow-hidden">
       
-      <div class="relative w-24 h-24 mx-auto mb-4 flex items-center justify-center">
+      <div class="relative w-24 h-24 mx-auto mb-3 flex items-center justify-center">
         <span id="candleFlame" class="flame-flicker absolute -top-1 text-3xl">🔥</span>
         <span id="cakeIcon" class="text-7xl transition-transform duration-300">🎂</span>
       </div>
 
       <h3 class="text-3xl font-serif-title font-bold text-gray-800 mb-2">Make a Birthday Wish</h3>
-      <p id="cakeInstruction" class="text-xs lg:text-sm text-gray-500 mb-8 max-w-md mx-auto leading-relaxed">
-        Close your eyes, make a special wish for this year, and click the button to blow out your candle!
+      <p id="cakeInstruction" class="text-xs lg:text-sm text-gray-500 mb-7 max-w-md mx-auto leading-relaxed">
+        Close your eyes, make a special wish for this year, and blow out your candle!
       </p>
 
       <button id="blowCandleBtn" onclick="blowCandles()" class="px-8 py-3.5 bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 text-white font-bold rounded-2xl shadow-lg shadow-rose-500/25 hover:shadow-rose-500/40 hover:scale-105 active:scale-95 transition">
         Blow Out the Candle 🕯️✨
       </button>
+    </section>
 
-      <div id="secretLetter" class="hidden mt-8 pt-8 border-t border-rose-100/80 text-left transition-all duration-700">
-        <div class="bg-rose-50/70 p-6 rounded-2xl border border-rose-100">
-          <p class="font-handwriting text-2xl text-gray-800 leading-relaxed">
-            "Happy Birthday Damru. Thank you for simply being you. May this year bring you all the endless happiness, laughter, and success you deserve. I love you more than words can say!" 💕
+  <!-- ================= 04. "WILL YOU..." INTERACTIVE QUESTION CARD ================= -->
+    <section id="questionSection" style="display: none;" class="bg-gradient-to-br from-white via-rose-50/40 to-pink-50/50 backdrop-blur-xl border-2 border-rose-200/80 p-8 lg:p-10 rounded-3xl text-center max-w-xl mx-auto shadow-[0_25px_60px_rgba(244,114,182,0.18)] mb-14 relative overflow-hidden transition-all duration-500">
+      
+      <!-- Cute Floating Accents -->
+      <div class="absolute -top-3 left-6 text-2xl opacity-60">💖</div>
+      <div class="absolute -top-3 right-6 text-2xl opacity-60">✨</div>
+
+      <!-- Mascot GIF -->
+      <div class="w-32 h-32 mx-auto mb-4 rounded-3xl overflow-hidden bg-rose-50 border border-rose-100 shadow-inner flex items-center justify-center p-1">
+  <img id="questionGif" 
+       src="images/ask.gif"
+       alt="Cute Mascot" 
+       class="w-24 h-24 object-contain animate-bounce">
+</div>
+
+      <span class="inline-block px-3.5 py-1 bg-rose-100/90 text-rose-600 rounded-full text-[11px] font-extrabold uppercase tracking-widest mb-3">
+        One Last Question 💌
+      </span>
+
+      <h3 id="questionTitle" class="text-2xl lg:text-3xl font-serif-title font-bold text-gray-900 mb-2">
+        Do you love me? 🥺
+      </h3>
+      <p id="questionSubtitle" class="text-xs text-gray-500 mb-8">
+        (Be careful what you pick, there's only one right answer!)
+      </p>
+
+      <!-- Buttons -->
+      <div id="btnContainer" class="relative flex items-center justify-center gap-4 min-h-[60px]">
+        <button id="yesBtn" onclick="handleYesClick()" class="px-8 py-3.5 bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 hover:from-rose-600 hover:to-pink-600 text-white font-bold rounded-2xl shadow-lg shadow-rose-500/30 hover:scale-110 active:scale-95 transition-all text-sm flex items-center gap-2 z-10 cursor-pointer">
+          <span>Yeesss!</span>
+          <span class="heart-bounce">🥰</span>
+        </button>
+
+        <button id="noBtn" onmouseenter="dodgeNoButton(event)" onclick="dodgeNoButton(event)" ontouchstart="dodgeNoButton(event)" class="px-6 py-3.5 bg-white hover:bg-rose-50 text-gray-500 border border-rose-200 font-semibold rounded-2xl shadow-sm text-xs transition-all duration-200">
+          No 🙈
+        </button>
+      </div>
+
+      <!-- ================= 05. REVEALED LOVE LETTER (DIRECT DISPLAY) ================= -->
+      <div id="finalLoveLetter" style="display: none;" class="mt-8 pt-6 border-t border-rose-200/80 text-left">
+        <div class="bg-gradient-to-br from-rose-50/95 via-pink-50/80 to-purple-50/90 p-6 lg:p-8 rounded-3xl border border-rose-200 shadow-sm relative">
+          
+          <div class="washi-tape"></div>
+
+          <div class="flex items-center gap-2 mb-4">
+            <span class="text-2xl">💌</span>
+            <h4 class="font-serif-title font-bold text-gray-800 text-lg">My Secret Letter to You</h4>
+          </div>
+
+          <p class="font-handwriting text-2xl lg:text-3xl text-gray-800 leading-relaxed">
+            "Happy Birthday my girl. Thank you for simply being you. Every single day with you is filled with so much warmth, laughter, comfort and a new adventure. You make my entire world calm and lovely just by existing. May this year bring you all the endless happiness, success, and love that you deserve. I love you endlessly!" 💕
           </p>
-          <p class="font-serif-title text-xs font-bold text-rose-500 text-right mt-3 tracking-wider uppercase">
-            — Forever Yours ✨
-          </p>
+
+          <div class="mt-6 pt-4 border-t border-rose-200/60 flex items-center justify-between">
+            <span class="text-xs font-semibold text-gray-400 font-serif-title">06.09 Birthday Edition</span>
+            <p class="font-serif-title text-sm font-bold text-rose-500 tracking-wider uppercase">
+              — Forever Yours ✨
+            </p>
+          </div>
         </div>
       </div>
+
     </section>
 
     <footer class="text-center text-xs text-gray-400 pb-12 font-medium tracking-wide">
@@ -712,31 +885,123 @@
     }
 
     // Candle Blowing Mechanics
-    function blowCandles() {
-      const flame = document.getElementById("candleFlame");
-      const btn = document.getElementById("blowCandleBtn");
-      const letter = document.getElementById("secretLetter");
-      const cakeInstruction = document.getElementById("cakeInstruction");
+    // 1. Candle Blowing Function
+   function blowCandles() {
+  const flame = document.getElementById("candleFlame");
+  const btn = document.getElementById("blowCandleBtn");
+  const cakeInstruction = document.getElementById("cakeInstruction");
+  const questionSection = document.getElementById("questionSection");
 
-      flame.classList.remove("flame-flicker");
-      flame.innerText = "💨";
-      setTimeout(() => flame.style.opacity = '0', 500);
+  if (flame) {
+    flame.classList.remove("flame-flicker");
+    flame.innerText = "💨";
+    setTimeout(() => flame.style.opacity = '0', 400);
+  }
 
-      confetti({
-        particleCount: 220,
-        spread: 130,
-        origin: { y: 0.65 },
-        colors: ['#ff6b81', '#f472b6', '#c084fc', '#ffd166', '#a7f3d0']
-      });
+  // Trigger smooth confetti shower
+  triggerRomanticConfetti();
 
-      btn.innerText = " Happy Birthday! 💖";
-      btn.disabled = true;
-      btn.classList.add("opacity-75", "cursor-default");
+  if (btn) {
+    btn.innerText = "Wish Made! 💖";
+    btn.disabled = true;
+    btn.classList.add("opacity-70", "cursor-default");
+  }
 
-      cakeInstruction.innerText = "✨ Your wish is officially locked in! Here is a note for you:";
-      letter.classList.remove("hidden");
-    }
+  if (cakeInstruction) {
+    cakeInstruction.innerText = "✨ Your birthday wish is locked in! Scroll down for one last surprise 👇";
+  }
 
+  if (questionSection) {
+    questionSection.style.display = "block";
+    setTimeout(() => {
+      questionSection.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 250);
+  }
+}
+
+    // Array placed outside the function
+const funnyPhrases = [
+  "Nice try! 😜",
+  "Wrong button! 🥺",
+  "Too slow! ⚡",
+  "You can't! 😂",
+  "Not an option! 🚫",
+  "Why are you running? 🏃💨",
+  "Missed me! 👻",
+  "Press Yes! 🥰",
+  "Error 404: No not found ❌",
+  "Illegal move! 👮‍♂️",
+  "Don't break my heart! 💔",
+  "Click YES already! 💖",
+  "You know you want to 😉",
+  "Still trying? 🤭",
+  "Nope! 🙈"
+];
+
+// Global counter variable
+let dodgeCount = 0;
+
+function dodgeNoButton(e) {
+  if (e && e.type === "touchstart") {
+    e.preventDefault();
+  }
+
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+
+  if (!noBtn || !yesBtn) return;
+
+  // Move the button
+  const randomX = (Math.random() - 0.5) * 220;
+  const randomY = (Math.random() - 0.5) * 120;
+  noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+
+  // Update text immediately
+  noBtn.innerText = funnyPhrases[dodgeCount % funnyPhrases.length];
+  dodgeCount++;
+
+  // Make YES button grow larger
+  const currentScale = 1 + (dodgeCount * 0.08);
+  yesBtn.style.transform = `scale(${Math.min(currentScale, 1.5)})`;
+}
+
+
+    // 3. "YES" Button Clicked -> Show Celebration & Love Letter
+   function handleYesClick() {
+  const questionGif = document.getElementById("questionGif");
+  const questionTitle = document.getElementById("questionTitle");
+  const questionSubtitle = document.getElementById("questionSubtitle");
+  const btnContainer = document.getElementById("btnContainer");
+  const letter = document.getElementById("finalLoveLetter");
+
+  // Trigger romantic confetti shower
+  triggerRomanticConfetti();
+
+  // Celebration Hug GIF
+  if (questionGif) {
+  questionGif.src = "images/hug.gif";
+  questionGif.classList.remove("animate-bounce");
+  questionGif.classList.add("heart-bounce");
+}
+
+  if (questionTitle) {
+    questionTitle.innerText = "YAAAY! Best decision ever! 🥰💖";
+  }
+  if (questionSubtitle) {
+    questionSubtitle.innerText = "Here is something for you from the depth of my heart:";
+  }
+
+  if (btnContainer) {
+    btnContainer.style.display = "none";
+  }
+
+  if (letter) {
+    letter.style.display = "block";
+    setTimeout(() => {
+      letter.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 150);
+  }
+}
     // Physical Laptop Keyboard support
     window.addEventListener("keydown", (e) => {
       if (isLocked) return;
@@ -761,6 +1026,60 @@
         setTimeout(() => particle.remove(), 900);
       }
     });
+    // Cinematic Romantic Dual-Cannon Confetti
+function triggerRomanticConfetti() {
+  const duration = 2.5 * 1000;
+  const animationEnd = Date.now() + duration;
+  const colors = ['#f43f5e', '#ec4899', '#d946ef', '#fbbf24', '#fda4af', '#ffffff'];
+
+  // 1. Initial big celebratory pop
+  confetti({
+    particleCount: 100,
+    spread: 100,
+    origin: { y: 0.6 },
+    colors: colors,
+    ticks: 200,
+    gravity: 0.8,
+    scalar: 1.1
+  });
+
+  // 2. Continuous streams from left & right corners
+  const interval = setInterval(function() {
+    const timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    const particleCount = 40 * (timeLeft / duration);
+
+    // Left cannon
+    confetti({
+      particleCount: particleCount,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0, y: 0.85 },
+      colors: colors,
+      ticks: 200,
+      gravity: 0.9,
+      drift: 0.1,
+      scalar: 1.1
+    });
+
+    // Right cannon
+    confetti({
+      particleCount: particleCount,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1, y: 0.85 },
+      colors: colors,
+      ticks: 200,
+      gravity: 0.9,
+      drift: -0.1,
+      scalar: 1.1
+    });
+  }, 180);
+}
   </script>
 </body>
 </html>
